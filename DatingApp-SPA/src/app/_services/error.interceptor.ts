@@ -1,4 +1,4 @@
-import { Injectable, INJECTOR } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpErrorResponse, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -15,14 +15,14 @@ export class ErrorInterceptor implements HttpInterceptor {
                 return throwError(error.stausText);
             }
             if (error instanceof HttpErrorResponse){
-                const aplicationError = error.headers.get('Aplcation-Error');
+                const aplicationError = error.headers.get('Application-Error');
                 if (aplicationError){
                     return throwError(aplicationError);
                 }
                 const serverError = error.error;
                 let modalStateErrors = '';
                 if(serverError.errors && typeof serverError.errors === 'object'){
-                    for (const key in serverError){
+                    for (const key in serverError.errors){
                         if (serverError.errors[key]){
                             modalStateErrors += serverError.errors[key] + '\n';
                         }
